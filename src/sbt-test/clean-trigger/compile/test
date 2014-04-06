@@ -1,0 +1,7 @@
+$ touch clean_trigger
+$ touch target/test.txt
+> compile
+-$ exists target/test.txt
+$ touch target/test.txt
+> compile
+$ exists target/test.txt

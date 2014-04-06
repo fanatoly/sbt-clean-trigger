@@ -1,0 +1,15 @@
+> show triggeredClean::cacheDirectory
+> show cleanTriggerFile
+$ touch clean_trigger
+$ exists clean_trigger
+$ touch target/test.txt
+$ exists target/test.txt
+> triggeredClean
+-$ exists target/test.txt
+$ touch target/test.txt
+> triggeredClean
+$ exists target/test.txt
+> clean
+$ touch target/test.txt
+> triggeredClean
+-$ exists target/test.txt
