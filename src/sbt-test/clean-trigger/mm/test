@@ -1,0 +1,25 @@
+> show triggeredClean::cacheDirectory
+> show cleanTriggerFile
+> show test1/cleanTriggerFile
+> show test2/cleanTriggerFile
+#when the root clean trigger is touched a clean should be run on all projects
+$ touch test1/clean_trigger
+$ touch test2/clean_trigger
+$ touch clean_trigger
+> compile
+$ exists clean_trigger
+> compile
+$ touch target/test.txt
+$ touch test1/target/test.txt
+$ touch test2/target/test.txt
+$ touch test1/clean_trigger
+> compile
+-$ exists test1/target/test.txt
+$ exists test2/target/test.txt
+$ exists target/test.txt
+$ touch test1/target/test.txt
+$ touch clean_trigger
+> compile
+-$ exists test1/target/test.txt
+-$ exists test2/target/test.txt
+-$ exists target/test.txt

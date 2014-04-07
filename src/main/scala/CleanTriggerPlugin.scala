@@ -16,14 +16,19 @@ object CleanTriggerPlugin extends Plugin{
       (cacheDirectory in triggeredClean).value,
       FilesInfo.lastModified
     )
-
-    val shouldClean = cacheStamp(Set(cleanTriggerFile.value)){ _.modified.nonEmpty }
+    val triggerFile = cleanTriggerFile.value
+    val theProj = thisProjectRef.value
+    val shouldClean = cacheStamp(Set(triggerFile)){ _.modified.nonEmpty }
+    val filter = ScopeFilter( inAggregates(theProj) )
 
     if(shouldClean) Def.task{
-      streams.value.log.info(s"A change to ${cleanTriggerFile.value} has triggered a clean build")
-      clean.value
-      cacheStamp(Set(cleanTriggerFile.value)){ _ => }
-    } else Def.task {}
+      streams.value.log.info(s"A change to ${triggerFile} has triggered a clean build")
+      streams.value.log.info(s"A should've deleted ${cleanFiles.value} but not ${cleanKeepFiles}")
+      clean.all(filter).value
+      cacheStamp(Set(cleanTriggerFile.all(filter).value: _*)){ _ => }
+    } else Def.task {
+      streams.value.log.info(s"No changes to ${triggerFile} not running clean")
+    }
 
   }
 
@@ -33,6 +38,6 @@ object CleanTriggerPlugin extends Plugin{
     triggeredClean := {
       dynamicClean.value
     },
-    (Keys.compile) <<= (Keys.compile in Compile) dependsOn (triggeredClean)
+    (Keys.compile in Compile in ThisProject) <<= (Keys.compile in Compile in ThisProject) dependsOn (triggeredClean)
   )
 }
