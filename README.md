@@ -18,11 +18,19 @@ a clean build as well.
 
 ## Usage ##
 
-In project/plugins.sbt
+The plugin is unpublished. To try it out you will need to clone the source and run
+
+```scala
+sbt publish-local
+```
+Subsequently you need to add
 
 ```scala
 addSbtPlugin("io.github.fanatoly" % "sbt-clean-trigger" % "0.1-SNAPSHOT") 
 ```
+
+to your project/plugins.sbt
+
 
 Subsequently touching or changing `clean_trigger` will trigger a clean build
 
@@ -38,5 +46,5 @@ cleanTriggerFile in triggeredClean := filename
 
 The plugin is very much in alpha. There are a couple of things that could make it better
 
-    - Better multi module support. Currently, a clean trigger will work on the current project or the aggregated projects e.g. if you have multiple modules aggregated by a root project `touching` the root `clean_trigger` file will cause clean to run on all the projects. In the same build, touching a non-root clean trigger will only cause that project's build directory to be cleaned
-	- Quieter logging - the plugin is pretty verbose right now. It is new and likely to have bugs.
+- Better multi module support. Currently, a clean trigger will work on the current project or the aggregated projects e.g. if you have multiple modules aggregated by a root project `touching` the root `clean_trigger` file will cause clean to run on all the projects. In the same build, touching a non-root clean trigger will only cause that project's build directory to be cleaned
+- Quieter logging - the plugin is pretty verbose right now. It is new and likely to have bugs.
