@@ -1,7 +1,5 @@
 # SBT Clean Trigger #
 
--------------------------------------------------------------------------------
-
 ## What is? ##
 
 Periodically, incremental compilation in SBT lets us down. We run into
