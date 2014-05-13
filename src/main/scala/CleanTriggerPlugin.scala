@@ -25,14 +25,14 @@ object CleanTriggerPlugin extends Plugin{
       streams.value.log.info(s"A change to ${triggerFile} has triggered a clean build")
       streams.value.log.info(s"A should've deleted ${cleanFiles.value} but not ${cleanKeepFiles}")
       clean.all(filter).value
-      cacheStamp(Set(cleanTriggerFile.all(filter).value: _*)){ _ => }
+      cacheStamp(Set(triggerFile)){ _ => }
     } else Def.task {
       streams.value.log.info(s"No changes to ${triggerFile} not running clean")
     }
 
   }
 
-  override val settings = Seq(
+  val rootSettings = Seq(
     cacheDirectory in triggeredClean <<= cacheDirectory( _/"clean_trigger" ),
     cleanTriggerFile <<= baseDirectory( _/"clean_trigger" ),
     triggeredClean := {
